@@ -10,6 +10,17 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(itemBuilder: (context,index){
+              return Text("Love u mantasha");
+            },
+            itemCount: 10,),
+          ),
+        ],
+      ),
+    );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../screens/chat.dart';
 
 class SignupDesign extends StatefulWidget {
   final Function create;
@@ -10,6 +11,24 @@ class SignupDesign extends StatefulWidget {
 }
 
 class _SignupDesignState extends State<SignupDesign> {
+  final _formKey = GlobalKey<FormState>();
+  var _passwordFocus = FocusNode();
+  var _confirmPasswordFocus = FocusNode();
+  var _emailController = TextEditingController();
+  var _passwordController = TextEditingController();
+  var _confirmPasswordController = TextEditingController();
+
+  String _password;
+
+  _saveForm() {
+    _formKey.currentState.save();
+    bool valid = _formKey.currentState.validate();
+    if (valid) {
+      print("valid");
+      Navigator.pushNamed(context, ChatScreen.routeName);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -17,6 +36,7 @@ class _SignupDesignState extends State<SignupDesign> {
       height: 400,
       width: double.infinity,
       child: Form(
+        key: _formKey,
         child: SingleChildScrollView(
           child: Column(
             children: [
@@ -28,6 +48,7 @@ class _SignupDesignState extends State<SignupDesign> {
                 height: 15,
               ),
               TextFormField(
+                textInputAction: TextInputAction.next,
                 decoration: InputDecoration(
                   labelText: 'Email',
                   contentPadding:
@@ -41,11 +62,24 @@ class _SignupDesignState extends State<SignupDesign> {
                     borderSide: BorderSide(width: 2.0, color: Colors.amber),
                   ),
                 ),
+                onFieldSubmitted: (_) {
+                  FocusScope.of(context).requestFocus(_passwordFocus);
+                },
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'please enter your email address';
+                  } else if (!value.endsWith('.com')) {
+                    return 'please enter valid email address';
+                  }
+                  return null;
+                },
               ),
               SizedBox(
                 height: 15,
               ),
               TextFormField(
+                focusNode: _passwordFocus,
+                textInputAction: TextInputAction.next,
                 decoration: InputDecoration(
                   contentPadding:
                       EdgeInsets.symmetric(horizontal: 8, vertical: 2),
@@ -58,11 +92,26 @@ class _SignupDesignState extends State<SignupDesign> {
                     ),
                   ),
                 ),
+                onFieldSubmitted: (_) {
+                  FocusScope.of(context).requestFocus(_confirmPasswordFocus);
+                },
+                onChanged: (value) {
+                  _password = value;
+                },
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'please enter your password';
+                  } else if (value.length < 6) {
+                    return 'Password must be in 6 character long';
+                  }
+                  return null;
+                },
               ),
               SizedBox(
                 height: 15,
               ),
               TextFormField(
+                focusNode: _confirmPasswordFocus,
                 decoration: InputDecoration(
                   contentPadding:
                       EdgeInsets.symmetric(horizontal: 8, vertical: 2),
@@ -75,12 +124,26 @@ class _SignupDesignState extends State<SignupDesign> {
                     ),
                   ),
                 ),
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'please enter your password';
+                  } else if (value.length < 6) {
+                    return 'password must be in 6 character long';
+                  } else if (value != _password) {
+                    return 'password should not be match';
+                  }
+                  return null;
+                },
+                textInputAction: TextInputAction.done,
+                onFieldSubmitted: (_) {
+                  _saveForm();
+                },
               ),
               SizedBox(
                 height: 15,
               ),
               FlatButton(
-                onPressed: () {},
+                onPressed: _saveForm,
                 child: Container(
                   color: Colors.blue,
                   width: double.infinity,

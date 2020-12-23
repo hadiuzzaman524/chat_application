@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../screens/chat.dart';
 
 class LogInDesign extends StatefulWidget {
   final Function create;
@@ -10,6 +11,21 @@ class LogInDesign extends StatefulWidget {
 }
 
 class _LogInDesignState extends State<LogInDesign> {
+  final _formKey = GlobalKey<FormState>();
+  var passwordFocus = FocusNode();
+  var emailController = TextEditingController();
+  var passwordController = TextEditingController();
+
+  _saveInfo() {
+    _formKey.currentState.save();
+    bool valid = _formKey.currentState.validate();
+    if (valid) {
+      print(emailController.text);
+      print(passwordController.text);
+      Navigator.pushNamed(context, ChatScreen.routeName);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -17,6 +33,7 @@ class _LogInDesignState extends State<LogInDesign> {
       height: 400,
       width: double.infinity,
       child: Form(
+        key: _formKey,
         child: SingleChildScrollView(
           child: Column(
             children: [
@@ -24,27 +41,42 @@ class _LogInDesignState extends State<LogInDesign> {
                 height: 15,
               ),
               TextFormField(
+                controller: emailController,
                 decoration: InputDecoration(
                   labelText: 'Email',
                   contentPadding:
-                  EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                      EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                   border: OutlineInputBorder(
                     gapPadding: 10,
                     borderRadius: BorderRadius.only(
                       topRight: Radius.circular(20),
                       bottomLeft: Radius.circular(20),
                     ),
-                    borderSide: BorderSide(width: 2.0, color: Colors.amber),
                   ),
                 ),
+                onFieldSubmitted: (value) {
+                  FocusScope.of(context).requestFocus(passwordFocus);
+                },
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Please enter your email';
+                  } else if (!value.endsWith('.com')) {
+                    return 'Please enter valid email address';
+                  }
+                  return null;
+                },
+                keyboardType: TextInputType.emailAddress,
+                textInputAction: TextInputAction.next,
               ),
               SizedBox(
                 height: 15,
               ),
               TextFormField(
+                focusNode: passwordFocus,
+                controller: passwordController,
                 decoration: InputDecoration(
                   contentPadding:
-                  EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                      EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                   labelText: 'Password',
                   border: OutlineInputBorder(
                     gapPadding: 10,
@@ -54,12 +86,24 @@ class _LogInDesignState extends State<LogInDesign> {
                     ),
                   ),
                 ),
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Please enter password';
+                  } else if (value.length < 6) {
+                    return 'Password must be in 6 character long';
+                  }
+                  return null;
+                },
+                textInputAction: TextInputAction.done,
+                onFieldSubmitted: (value) {
+                  _saveInfo();
+                },
               ),
               SizedBox(
                 height: 15,
               ),
               FlatButton(
-                onPressed: () {},
+                onPressed: _saveInfo,
                 child: Container(
                   color: Colors.blue,
                   width: double.infinity,
