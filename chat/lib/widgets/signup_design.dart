@@ -3,8 +3,9 @@ import '../screens/chat.dart';
 
 class SignupDesign extends StatefulWidget {
   final Function create;
+  final Function accountCreate;
 
-  SignupDesign({this.create});
+  SignupDesign({this.create, this.accountCreate});
 
   @override
   _SignupDesignState createState() => _SignupDesignState();
@@ -17,7 +18,8 @@ class _SignupDesignState extends State<SignupDesign> {
   var _emailController = TextEditingController();
   var _passwordController = TextEditingController();
   var _confirmPasswordController = TextEditingController();
-
+  var _nameController=TextEditingController();
+  var _emailFocus=FocusNode();
   String _password;
 
   _saveForm() {
@@ -25,7 +27,12 @@ class _SignupDesignState extends State<SignupDesign> {
     bool valid = _formKey.currentState.validate();
     if (valid) {
       print("valid");
-      Navigator.pushNamed(context, ChatScreen.routeName);
+      //  Navigator.pushNamed(context, ChatScreen.routeName);
+      widget.accountCreate(
+          email: _emailController.text,
+          password: _passwordController.text,
+          name: _nameController.text,
+          isLogin: false);
     }
   }
 
@@ -49,6 +56,37 @@ class _SignupDesignState extends State<SignupDesign> {
               ),
               TextFormField(
                 textInputAction: TextInputAction.next,
+                controller: _nameController,
+                decoration: InputDecoration(
+                  labelText: 'Name',
+                  contentPadding:
+                  EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                  border: OutlineInputBorder(
+                    gapPadding: 10,
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(20),
+                      bottomLeft: Radius.circular(20),
+                    ),
+                    borderSide: BorderSide(width: 2.0, color: Colors.amber),
+                  ),
+                ),
+                onFieldSubmitted: (_) {
+                  FocusScope.of(context).requestFocus(_emailFocus);
+                },
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'please enter your email address';
+                  }
+                  return null;
+                },
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              TextFormField(
+                textInputAction: TextInputAction.next,
+                controller: _emailController,
+                focusNode: _emailFocus,
                 decoration: InputDecoration(
                   labelText: 'Email',
                   contentPadding:
@@ -79,6 +117,7 @@ class _SignupDesignState extends State<SignupDesign> {
               ),
               TextFormField(
                 focusNode: _passwordFocus,
+                controller: _passwordController,
                 textInputAction: TextInputAction.next,
                 decoration: InputDecoration(
                   contentPadding:
@@ -112,6 +151,7 @@ class _SignupDesignState extends State<SignupDesign> {
               ),
               TextFormField(
                 focusNode: _confirmPasswordFocus,
+                controller: _confirmPasswordController,
                 decoration: InputDecoration(
                   contentPadding:
                       EdgeInsets.symmetric(horizontal: 8, vertical: 2),

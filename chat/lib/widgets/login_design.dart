@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import '../screens/chat.dart';
 
+
 class LogInDesign extends StatefulWidget {
   final Function create;
+  final Function accountCreate;
 
-  LogInDesign({this.create});
+  LogInDesign({this.create, this.accountCreate});
 
   @override
   _LogInDesignState createState() => _LogInDesignState();
@@ -22,7 +24,12 @@ class _LogInDesignState extends State<LogInDesign> {
     if (valid) {
       print(emailController.text);
       print(passwordController.text);
-      Navigator.pushNamed(context, ChatScreen.routeName);
+      //Navigator.pushNamed(context, ChatScreen.routeName);
+      widget.accountCreate(
+          email: emailController.text,
+          password: passwordController.text,
+          name: "",
+          isLogin:true);
     }
   }
 
