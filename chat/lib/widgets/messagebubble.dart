@@ -1,10 +1,13 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class MessageBubble extends StatelessWidget {
   final String msg;
   final bool isMe;
+  final String name;
 
-  MessageBubble({this.msg, this.isMe});
+  MessageBubble({this.msg, this.isMe, this.name});
 
   @override
   Widget build(BuildContext context) {
@@ -12,19 +15,50 @@ class MessageBubble extends StatelessWidget {
       mainAxisAlignment: isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
       children: [
         Container(
-          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-         
+          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
           decoration: BoxDecoration(
-            color: isMe ? Colors.red : Colors.green,
-            borderRadius:isMe?BorderRadius.only(topLeft: Radius.circular(10),bottomRight: Radius.circular(10)):BorderRadius.only(topRight: Radius.circular(10),bottomLeft: Radius.circular(10))
-          ),
-          child: Text(
-            msg,
-            style: TextStyle(
-              fontSize: 17,
-              fontWeight: FontWeight.normal,
-              color: Colors.white,
-            ),
+              color: isMe ? Color(0xffDCF8C5) : Colors.white,
+              borderRadius: isMe
+                  ? BorderRadius.only(
+                      topLeft: Radius.circular(15),
+                      bottomRight: Radius.circular(15))
+                  : BorderRadius.only(
+                      topRight: Radius.circular(15),
+                      bottomLeft: Radius.circular(15))),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                name,
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontSize: 10,
+                  fontWeight: FontWeight.normal,
+                ),
+              ),
+              SizedBox(
+                height: 3,
+              ),
+              Container(
+                width: msg.length <= 5
+                    ? 40
+                    : msg.length < 20 && msg.length > 5
+                        ? 100
+                        : msg.length < 30 && msg.length > 20
+                            ? 150
+                            : 300,
+                child: Text(
+                  msg,
+                  textAlign: TextAlign.justify,
+                  style: TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.normal,
+                    color: isMe ? Colors.black : Colors.black,
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ],

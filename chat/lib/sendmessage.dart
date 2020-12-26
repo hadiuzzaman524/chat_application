@@ -30,6 +30,7 @@ class _SendMessageState extends State<SendMessage> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      color: Colors.white,
       child: Row(
         children: [
           Expanded(

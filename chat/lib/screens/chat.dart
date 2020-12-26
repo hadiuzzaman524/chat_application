@@ -35,13 +35,21 @@ class _ChatScreenState extends State<ChatScreen> {
           )
         ],
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: Messages(),
-          ),
-          SendMessage(),
-        ],
+      body: Container(
+       decoration: BoxDecoration(
+         image: DecorationImage(
+           image:AssetImage('assets/images/chat.png'),
+           fit: BoxFit.cover,
+         )
+       ),
+        child: Column(
+          children: [
+            Expanded(
+              child: Messages(),
+            ),
+            SendMessage(),
+          ],
+        ),
       ),
     );
   }
