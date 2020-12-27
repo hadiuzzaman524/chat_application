@@ -9,22 +9,25 @@ class SendMessage extends StatefulWidget {
 
 class _SendMessageState extends State<SendMessage> {
   String _typedMessage = '';
-  var textController=TextEditingController();
+  var textController = TextEditingController();
 
-  _sendMessage() async{
-    final user=await FirebaseAuth.instance.currentUser.uid;
-    int i=0;
-    DocumentSnapshot userName= await FirebaseFirestore.instance.collection('users').doc(user).get();
-    final x= userName.data()['name'];
-
-
-   await FirebaseFirestore.instance.collection('chat').add({
-      'text': _typedMessage,
-     'time': Timestamp.now(),
-     'userId':user,
-     'userName':x,
-    });
+  _sendMessage() async {
     textController.clear();
+    final user = await FirebaseAuth.instance.currentUser.uid;
+    int i = 0;
+    DocumentSnapshot userName =
+        await FirebaseFirestore.instance.collection('users').doc(user).get();
+    final x = userName.data()['name'];
+    final imageUrl = userName.data()['imageUrl'];
+
+    await FirebaseFirestore.instance.collection('chat').add({
+      'text': _typedMessage,
+      'time': Timestamp.now(),
+      'userId': user,
+      'userName': x,
+      'imageUrl': imageUrl,
+    });
+
   }
 
   @override
@@ -48,9 +51,8 @@ class _SendMessageState extends State<SendMessage> {
                   setState(() {
                     _typedMessage = value;
                   });
-
                 },
-                onSubmitted: (_){
+                onSubmitted: (_) {
                   _sendMessage();
                 },
               ),
@@ -58,7 +60,7 @@ class _SendMessageState extends State<SendMessage> {
           ),
           IconButton(
             icon: Icon(Icons.send),
-            onPressed: _typedMessage.trim().length<1 ? null : _sendMessage,
+            onPressed: _typedMessage.trim().length < 1 ? null : _sendMessage,
           ),
         ],
       ),

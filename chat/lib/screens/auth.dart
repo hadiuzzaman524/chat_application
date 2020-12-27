@@ -1,8 +1,10 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import '../widgets/signup_design.dart';
 import '../widgets/login_design.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 class AuthScreen extends StatefulWidget {
   static const routeName = '/AuthScreen';
@@ -33,7 +35,11 @@ class _AuthScreenState extends State<AuthScreen> {
   }
 
   _createOrLoginUser(
-      {String email, String password, String name, bool isLogin}) async {
+      {String email,
+      String password,
+      String name,
+      bool isLogin,
+      File image}) async {
     UserCredential state;
     try {
       setState(() {
@@ -45,10 +51,19 @@ class _AuthScreenState extends State<AuthScreen> {
       } else {
         state = await auth.createUserWithEmailAndPassword(
             email: email, password: password);
+        //print(image.path);
+        final bucket = FirebaseStorage.instance
+            .ref()
+            .child('user_images')
+            .child(state.user.uid + '.jpg');
+        await bucket.putFile(image).whenComplete(() => null);
+        final imageUrl =await bucket.getDownloadURL();
+        print(imageUrl);
+
         await FirebaseFirestore.instance
             .collection('users')
             .doc(state.user.uid)
-            .set({'name': name, 'email': email});
+            .set({'name': name, 'email': email, 'imageUrl': imageUrl});
       }
       setState(() {
         isLoading = false;

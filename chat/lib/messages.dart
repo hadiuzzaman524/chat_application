@@ -30,7 +30,9 @@ class Messages extends StatelessWidget {
                   child: MessageBubble(
                     msg: snapshoot.data.docs[index]['text'],
                     isMe: snapshoot.data.docs[index]['userId'] == uid,
-                name: snapshoot.data.docs[index]['userName'],  ),
+                    name: snapshoot.data.docs[index]['userName'],
+                    imageUrl:snapshoot.data.docs[index]['imageUrl'],
+                  ),
                 );
               },
               itemCount: snapshoot.data.size,

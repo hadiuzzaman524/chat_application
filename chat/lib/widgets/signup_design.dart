@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
 import '../screens/chat.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
 class SignupDesign extends StatefulWidget {
   final Function create;
-  final Function accountCreate;
+  final Function(
+      {String email,
+      String password,
+      String name,
+      bool isLogin,
+      File image}) accountCreate;
 
   SignupDesign({this.create, this.accountCreate});
 
@@ -18,9 +25,20 @@ class _SignupDesignState extends State<SignupDesign> {
   var _emailController = TextEditingController();
   var _passwordController = TextEditingController();
   var _confirmPasswordController = TextEditingController();
-  var _nameController=TextEditingController();
-  var _emailFocus=FocusNode();
+  var _nameController = TextEditingController();
+  var _emailFocus = FocusNode();
   String _password;
+  File _image;
+
+  _pickedImage() async {
+    final img = await ImagePicker()
+        .getImage(source: ImageSource.camera, imageQuality: 50, maxWidth: 150);
+    setState(() {
+      if (img != null) {
+        _image = File(img.path);
+      }
+    });
+  }
 
   _saveForm() {
     _formKey.currentState.save();
@@ -32,7 +50,8 @@ class _SignupDesignState extends State<SignupDesign> {
           email: _emailController.text,
           password: _passwordController.text,
           name: _nameController.text,
-          isLogin: false);
+          isLogin: false,
+          image: _image);
     }
   }
 
@@ -47,9 +66,14 @@ class _SignupDesignState extends State<SignupDesign> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              CircleAvatar(
-                backgroundColor: Colors.green,
-                radius: 40,
+              GestureDetector(
+                onTap: _pickedImage,
+                child: CircleAvatar(
+                  backgroundImage: _image != null ? FileImage(_image) : null,
+                  backgroundColor: Colors.white,
+                  child: _image == null ? Icon(Icons.image) : null,
+                  radius: 40,
+                ),
               ),
               SizedBox(
                 height: 15,
@@ -60,7 +84,7 @@ class _SignupDesignState extends State<SignupDesign> {
                 decoration: InputDecoration(
                   labelText: 'Name',
                   contentPadding:
-                  EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                      EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                   border: OutlineInputBorder(
                     gapPadding: 10,
                     borderRadius: BorderRadius.only(
