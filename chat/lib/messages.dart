@@ -21,7 +21,7 @@ class Messages extends StatelessWidget {
         }
         if (snapshoot.hasData) {
           return Container(
-            padding: EdgeInsets.symmetric(horizontal: 25),
+            padding: EdgeInsets.symmetric(horizontal: 10),
             child: ListView.builder(
               reverse: true,
               itemBuilder: (context, index) {
