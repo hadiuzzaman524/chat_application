@@ -15,39 +15,28 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
+    final receiverId = ModalRoute.of(context).settings.arguments.toString();
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Chats'),
         centerTitle: true,
-        actions: [
-          DropdownButton(
-            icon: Icon(Icons.list,color: Colors.white,),
-            items: [
-              DropdownMenuItem(
-                child: Text('Log Out'),
-                value: 'logout',
-              ),
-            ], onChanged: (String value) {
-              if(value=='logout'){
-                FirebaseAuth.instance.signOut();
-              }
-          },
-          )
-        ],
+
       ),
       body: Container(
-       decoration: BoxDecoration(
-         image: DecorationImage(
-           image:AssetImage('assets/images/chat.png'),
-           fit: BoxFit.cover,
-         )
-       ),
+        decoration: BoxDecoration(
+            image: DecorationImage(
+          image: AssetImage('assets/images/chat.png'),
+          fit: BoxFit.cover,
+        )),
         child: Column(
           children: [
             Expanded(
-              child: Messages(),
+              child: Messages(receiverId:receiverId),
             ),
-            SendMessage(),
+            SendMessage(
+              receiverId: receiverId,
+            ),
           ],
         ),
       ),

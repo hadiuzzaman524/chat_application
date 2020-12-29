@@ -63,11 +63,8 @@ class _AuthScreenState extends State<AuthScreen> {
         await FirebaseFirestore.instance
             .collection('users')
             .doc(state.user.uid)
-            .set({'name': name, 'email': email, 'imageUrl': imageUrl});
+            .set({'name': name, 'email': email, 'imageUrl': imageUrl,'userId':state.user.uid});
       }
-      setState(() {
-        isLoading = false;
-      });
     } catch (error) {
       errorMsg = error.toString();
       // Scaffold.of(ctx).showSnackBar(SnackBar(content: Text(errorMsg)));

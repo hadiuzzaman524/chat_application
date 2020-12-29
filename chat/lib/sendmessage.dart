@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SendMessage extends StatefulWidget {
+  final String receiverId;
+  SendMessage({this.receiverId});
   @override
   _SendMessageState createState() => _SendMessageState();
 }
@@ -23,9 +25,10 @@ class _SendMessageState extends State<SendMessage> {
     await FirebaseFirestore.instance.collection('chat').add({
       'text': _typedMessage,
       'time': Timestamp.now(),
-      'userId': user,
+      'senderId': user,
       'userName': x,
       'imageUrl': imageUrl,
+      'receiverId':widget.receiverId,
     });
 
   }

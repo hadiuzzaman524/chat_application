@@ -1,14 +1,21 @@
+import 'package:chat/providers.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import './screens/auth.dart';
 import './screens/chat.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import './screens/mainscreen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MyApp());
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(
+      create: (_) => UserProvider(),
+    )
+  ], child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -16,9 +23,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primaryColor: Colors.lightGreen
-      ),
+      theme: ThemeData(primaryColor: Colors.lightGreen),
       home: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (ctx, stateSnapshoot) {
@@ -28,7 +33,7 @@ class MyApp extends StatelessWidget {
             );
           }
           if (stateSnapshoot.hasData) {
-            return ChatScreen();
+            return MainScreen();
           } else {
             return AuthScreen();
           }
