@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../screens/chat.dart';
-import 'package:provider/provider.dart';
+
 
 class CurrentChat extends StatelessWidget {
   _chatPage(BuildContext ctx, String userId) {
@@ -14,7 +14,6 @@ class CurrentChat extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //final v=Provider.of<UserProvider>(context).getuniqueUser();
 
     return FutureBuilder<QuerySnapshot>(
         future: FirebaseFirestore.instance.collection('users').get(),
@@ -26,7 +25,10 @@ class CurrentChat extends StatelessWidget {
           }
 
           return StreamBuilder<QuerySnapshot>(
-            stream: FirebaseFirestore.instance.collection('chat').snapshots(),
+            stream:  Firestore.instance
+                .collection('chat')
+                .orderBy('time', descending: true)
+                .snapshots(),
             builder: (ctx, snp) {
               final userId = FirebaseAuth.instance.currentUser.uid;
               if (snp.connectionState == ConnectionState.waiting) {
@@ -100,64 +102,3 @@ class CurrentChat extends StatelessWidget {
         });
   }
 }
-
-/*
- List<String> _userList = [];
-    return StreamBuilder<QuerySnapshot>(
-        stream: Firestore.instance
-            .collection('chat')
-            .orderBy('time', descending: true)
-            .snapshots(),
-        builder: (context, snapshot) {
-          final userId = FirebaseAuth.instance.currentUser.uid;
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          for(int i=0; i<snapshot.data.size; i++){
-            _userList.add(snapshot.data.docs[i]['senderId']);
-          }
-          _userList=_userList.toSet().toList();
-
-          return StreamBuilder<QuerySnapshot>(
-            stream: FirebaseFirestore.instance.collection('users').snapshots(),
-            builder: (context, snapshot2) {
-              if(snapshot2.connectionState==ConnectionState.waiting){
-                return Center(child: CircularProgressIndicator(),);
-              }
-              return ListView.builder(
-                itemBuilder: (ctx, index) {
-                  for(int j=0; j<_userList.length; j++){
-                    if(_userList[j]==snapshot2.data.docs[index]['userId']&&userId!=snapshot2.data.docs[index]['userId']){
-                      return Column(
-                        children: [
-                          ListTile(
-                            onTap: (){
-                              _chatPage(ctx, snapshot2.data.docs[index]['userId']);
-                            },
-                            leading: CircleAvatar(
-                              backgroundImage: NetworkImage(snapshot2.data.docs[index]['imageUrl']),
-                            ),
-                            title: Text(snapshot2.data.docs[index]['name'],
-                            style: TextStyle(
-                              fontSize: 17,
-                              fontWeight: FontWeight.bold,
-                            ),),
-                            subtitle: Text('Nothing...'),
-                          ),
-                          Divider(),
-                        ],
-                      );
-                    }
-
-                  }
-                  return null;
-                },
-                itemCount:snapshot2.data.size,
-              );
-            }
-          );
-        });
-
- */

@@ -5,10 +5,17 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Messages extends StatelessWidget {
+class Messages extends StatefulWidget {
   final String receiverId;
 
   Messages({this.receiverId});
+
+  @override
+  _MessagesState createState() => _MessagesState();
+}
+
+class _MessagesState extends State<Messages> {
+
 
   @override
   Widget build(BuildContext context) {
@@ -32,31 +39,40 @@ class Messages extends StatelessWidget {
 
               child: ListView.builder(
                 reverse: true,
+                shrinkWrap: true,
                 itemBuilder: (context, index) {
-                  if (receiverId==snapshoot.data.docs[index]['receiverId']&&uid == snapshoot.data.docs[index]['senderId']) {
-                    return Padding(
-                      padding: EdgeInsets.symmetric(vertical: 5),
-                      child: MessageBubble(
-                        msg: snapshoot.data.docs[index]['text'],
-                        isMe: true,
-                        name: snapshoot.data.docs[index]['userName'],
-                        imageUrl: snapshoot.data.docs[index]['imageUrl'],
-                      ),
-                    );
-                  }
-                  else if (receiverId==snapshoot.data.docs[index]['senderId']&&uid == snapshoot.data.docs[index]['receiverId']) {
-                    return Padding(
-                      padding: EdgeInsets.symmetric(vertical: 5),
-                      child: MessageBubble(
-                        msg: snapshoot.data.docs[index]['text'],
-                        isMe: false,
-                        name: snapshoot.data.docs[index]['userName'],
-                        imageUrl: snapshoot.data.docs[index]['imageUrl'],
-                      ),
-                    );
-                  }
+                  try {
+                    if (widget.receiverId ==
+                        snapshoot.data.docs[index]['receiverId'] &&
+                        uid == snapshoot.data.docs[index]['senderId']) {
+                      return Padding(
+                        padding: EdgeInsets.symmetric(vertical: 5),
+                        child: MessageBubble(
+                          msg: snapshoot.data.docs[index]['text'],
+                          isMe: true,
+                          name: snapshoot.data.docs[index]['userName'],
+                          imageUrl: snapshoot.data.docs[index]['imageUrl'],
+                        ),
+                      );
+                    }
+                    else if (widget.receiverId ==
+                        snapshoot.data.docs[index]['senderId'] &&
+                        uid == snapshoot.data.docs[index]['receiverId']) {
+                      return Padding(
+                        padding: EdgeInsets.symmetric(vertical: 5),
+                        child: MessageBubble(
+                          msg: snapshoot.data.docs[index]['text'],
+                          isMe: false,
+                          name: snapshoot.data.docs[index]['userName'],
+                          imageUrl: snapshoot.data.docs[index]['imageUrl'],
+                        ),
+                      );
+                    }
 
-                  return null;
+                  }catch(e){
+                    print('handle');
+                  }
+                  return Text('');
                 },
                 itemCount: snapshoot.data.size,
               ),
