@@ -1,9 +1,8 @@
-import 'dart:ffi';
-
 import 'package:chat/widgets/messagebubble.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'model/message_info.dart';
 
 class Messages extends StatefulWidget {
   final String receiverId;
@@ -15,71 +14,101 @@ class Messages extends StatefulWidget {
 }
 
 class _MessagesState extends State<Messages> {
-
-
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
-        // ignore: deprecated_member_use
-        stream: Firestore.instance
-            .collection('chat')
-            .orderBy('time', descending: true)
-            .snapshots(),
-        builder: (context, snapshoot) {
-          final uid = FirebaseAuth.instance.currentUser.uid;
+      // ignore: deprecated_member_use
+      stream: Firestore.instance
+          .collection('chat')
+          .orderBy('time', descending: true)
+          .snapshots(),
+      builder: (context, snapshoot) {
+        final uid = FirebaseAuth.instance.currentUser.uid;
 
-          if (snapshoot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
+        if (snapshoot.connectionState == ConnectionState.waiting) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        if (snapshoot.hasData) /**/ {
+          List<MessageInformation> _messageList = [];
+
+          for (int i = 0; i < snapshoot.data.size; i++) {
+            try {
+              if (widget.receiverId == snapshoot.data.docs[i]['receiverId'] &&
+                  uid == snapshoot.data.docs[i]['senderId']) {
+                _messageList.add(MessageInformation(
+                    timestamp: snapshoot.data.docs[i]['time'],
+                    imageUrl: snapshoot.data.docs[i]['imageUrl'],
+                    receiverId: snapshoot.data.docs[i]['receiverId'],
+                    senderId: snapshoot.data.docs[i]['senderId'],
+                    isMe: true,
+                    userName: snapshoot.data.docs[i]['userName'],
+                    text: snapshoot.data.docs[i]['text']));
+              } else if (widget.receiverId ==
+                      snapshoot.data.docs[i]['senderId'] &&
+                  uid == snapshoot.data.docs[i]['receiverId']) {
+                _messageList.add(MessageInformation(
+                    timestamp: snapshoot.data.docs[i]['time'],
+                    imageUrl: snapshoot.data.docs[i]['imageUrl'],
+                    receiverId: snapshoot.data.docs[i]['receiverId'],
+                    senderId: snapshoot.data.docs[i]['senderId'],
+                    isMe: false,
+                    userName: snapshoot.data.docs[i]['userName'],
+                    text: snapshoot.data.docs[i]['text']));
+              }
+            } catch (e) {
+              print('handle');
+            }
           }
-          if (snapshoot.hasData) /**/ {
-            return Container(
-              padding: EdgeInsets.symmetric(horizontal: 10),
 
-              child: ListView.builder(
-                reverse: true,
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  try {
-                    if (widget.receiverId ==
-                        snapshoot.data.docs[index]['receiverId'] &&
-                        uid == snapshoot.data.docs[index]['senderId']) {
-                      return Padding(
+          return Container(
+            padding: EdgeInsets.symmetric(horizontal: 10),
+            child: ListView.builder(
+              reverse: true,
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                /* return Padding(
+                    padding: EdgeInsets.symmetric(vertical: 5),
+                    child: MessageBubble(
+                      msg: _messageList[index].text,
+                      isMe: _messageList[index].isMe,
+                      name: _messageList[index].userName,
+                      imageUrl: _messageList[index].imageUrl,
+                    ),
+                  );*/
+                return _messageList[index].isMe
+                    ? Padding(
                         padding: EdgeInsets.symmetric(vertical: 5),
                         child: MessageBubble(
-                          msg: snapshoot.data.docs[index]['text'],
+                          msg: _messageList[index].text,
                           isMe: true,
-                          name: snapshoot.data.docs[index]['userName'],
-                          imageUrl: snapshoot.data.docs[index]['imageUrl'],
+                          name: _messageList[index].userName,
+                          imageUrl: _messageList[index].imageUrl,
                         ),
-                      );
-                    }
-                    else if (widget.receiverId ==
-                        snapshoot.data.docs[index]['senderId'] &&
-                        uid == snapshoot.data.docs[index]['receiverId']) {
-                      return Padding(
+                      )
+                    : Padding(
                         padding: EdgeInsets.symmetric(vertical: 5),
                         child: MessageBubble(
-                          msg: snapshoot.data.docs[index]['text'],
+                          msg: _messageList[index].text,
                           isMe: false,
-                          name: snapshoot.data.docs[index]['userName'],
-                          imageUrl: snapshoot.data.docs[index]['imageUrl'],
+                          name: _messageList[index].userName,
+                          imageUrl: _messageList[index].imageUrl,
                         ),
                       );
-                    }
-
-                  }catch(e){
-                    print('handle');
-                  }
-                  return Text('');
-                },
-                itemCount: snapshoot.data.size,
-              ),
-            );
-          } else {
-            return Text('Loading...');
-          }
-        });
+              },
+              itemCount: _messageList.length,
+            ),
+          );
+        } else {
+          return Text('Loading...');
+        }
+      },
+    );
   }
 }
+
+/*
+
+
+ */
