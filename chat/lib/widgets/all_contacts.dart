@@ -33,7 +33,7 @@ class UserContacts extends StatelessWidget {
                     ListTile(
                       contentPadding: EdgeInsets.all(10),
                       leading: CircleAvatar(
-                        radius: 30,
+
                         backgroundImage: NetworkImage(
                             snapshoot.data.docs[index]['imageUrl']),
                       ),
@@ -52,7 +52,7 @@ class UserContacts extends StatelessWidget {
                             snapshoot.data.docs[index]['name'],
                             snapshoot.data.docs[index]['imageUrl']);
                       },
-                      subtitle: Text('Nothing to say...'),
+
                     ),
                   Divider(
                     height: 1,

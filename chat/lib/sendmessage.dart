@@ -1,4 +1,7 @@
+import 'dart:ffi';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -12,9 +15,16 @@ class SendMessage extends StatefulWidget {
 class _SendMessageState extends State<SendMessage> {
   String _typedMessage = '';
   var textController = TextEditingController();
+  String _sendMessageString;
+
 
   _sendMessage() async {
-    textController.clear();
+    setState(() {
+      _sendMessageString=_typedMessage;
+      _typedMessage='';
+      textController.clear();
+    });
+
     final user = await FirebaseAuth.instance.currentUser.uid;
     int i = 0;
     DocumentSnapshot userName =
@@ -23,16 +33,22 @@ class _SendMessageState extends State<SendMessage> {
     final imageUrl = userName.data()['imageUrl'];
 
     await FirebaseFirestore.instance.collection('chat').add({
-      'text': _typedMessage,
+      'text': _sendMessageString.trim(),
       'time': Timestamp.now(),
       'senderId': user,
       'userName': x,
       'imageUrl': imageUrl,
       'receiverId':widget.receiverId,
     });
-
+    textController.clear();
   }
 
+/*  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    textController.dispose();
+  }*/
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -47,6 +63,10 @@ class _SendMessageState extends State<SendMessage> {
                 decoration: InputDecoration(
                   hintText: 'Type your message here...',
                 ),
+                textInputAction: TextInputAction.newline,
+                keyboardType: TextInputType.multiline,
+                minLines: 1,
+                maxLines: 6,
                 style: TextStyle(
                   fontSize: 17,
                 ),
@@ -54,9 +74,6 @@ class _SendMessageState extends State<SendMessage> {
                   setState(() {
                     _typedMessage = value;
                   });
-                },
-                onSubmitted: (_) {
-                  _sendMessage();
                 },
               ),
             ),

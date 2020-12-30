@@ -33,7 +33,7 @@ class MessageBubble extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+          /*    Text(
                 name,
                 textAlign: TextAlign.left,
                 style: TextStyle(
@@ -41,13 +41,13 @@ class MessageBubble extends StatelessWidget {
                   fontSize: 10,
                   fontWeight: FontWeight.normal,
                 ),
-              ),
+              ),*/
               SizedBox(
                 height: 3,
               ),
               Container(
                 width: msg.length <= 5
-                    ? 40
+                    ? 45
                     : msg.length < 20 && msg.length > 5
                         ? 100
                         : msg.length < 30 && msg.length > 20
@@ -57,7 +57,7 @@ class MessageBubble extends StatelessWidget {
                   msg,
                   textAlign: TextAlign.justify,
                   style: TextStyle(
-                    fontSize: 17,
+                    fontSize: 16,
                     fontWeight: FontWeight.normal,
                     color: isMe ? Colors.black : Colors.black,
                   ),

@@ -25,7 +25,6 @@ class _ChatScreenState extends State<ChatScreen> {
         title: Row(
           children: [
             CircleAvatar(
-              radius: 25,
               backgroundImage: NetworkImage(imageUrl),
             ),
             SizedBox(

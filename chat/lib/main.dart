@@ -1,5 +1,6 @@
 import 'package:chat/providers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import './screens/auth.dart';
 import './screens/chat.dart';
@@ -11,6 +12,9 @@ import './screens/mainscreen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(// navigation bar color
+    statusBarColor: Colors.lightGreen, // status bar color
+  ));
   runApp(MyApp());
 }
 
@@ -22,7 +26,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Colors.lightGreen,
         fontFamily: 'Merriweather',
-        iconTheme: IconThemeData(color: Colors.white),
+       
       ),
       home: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),

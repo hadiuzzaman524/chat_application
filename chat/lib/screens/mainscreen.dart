@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../widgets/all_contacts.dart';
 import '../widgets/current_chats_user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../widgets/drawer.dart';
 
 class MainScreen extends StatelessWidget {
   static const routeName = '/MainScreen';
@@ -18,26 +19,10 @@ class MainScreen extends StatelessWidget {
             style: TextStyle(
                 color: Colors.white, fontSize: 30, fontFamily: 'LobsterTwo'),
           ),
-          actions: [
-            DropdownButton(
-              icon: Icon(
-                Icons.list,
-                color: Colors.white,
-              ),
-              items: [
-                DropdownMenuItem(
-                  child: Text('Log Out'),
-                  value: 'logout',
-                ),
-              ],
-              onChanged: (String value) {
-                if (value == 'logout') {
-                  FirebaseAuth.instance.signOut();
-                }
-              },
-            )
-          ],
+
           bottom: TabBar(
+            indicatorColor: Colors.greenAccent,
+
             tabs: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -45,12 +30,14 @@ class MainScreen extends StatelessWidget {
                   SizedBox(
                     width: 5,
                   ),
-                  Text(
-                    'Chats'.toUpperCase(),
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 17,
-                      fontWeight: FontWeight.bold,
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      'Chats'.toUpperCase(),
+                      style: TextStyle(
+                        color: Colors.white,
+
+                      ),
                     ),
                   ),
                 ],
@@ -65,8 +52,7 @@ class MainScreen extends StatelessWidget {
                     'Contacts'.toUpperCase(),
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 17,
-                      fontWeight: FontWeight.bold,
+
                     ),
                   ),
                 ],
@@ -80,7 +66,10 @@ class MainScreen extends StatelessWidget {
             UserContacts(),
           ],
         ),
-        drawer: Drawer(),
+        drawer: Drawer(
+          child: DrawerDesign(
+          ),
+        ),
       ),
     );
   }
