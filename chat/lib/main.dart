@@ -11,7 +11,7 @@ import './screens/mainscreen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp( MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -19,7 +19,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(primaryColor: Colors.lightGreen),
+      theme: ThemeData(
+        primaryColor: Colors.lightGreen,
+        fontFamily: 'Merriweather',
+        iconTheme: IconThemeData(color: Colors.white),
+      ),
       home: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (ctx, stateSnapshoot) {

@@ -8,8 +8,10 @@ import '../screens/chat.dart';
 
 
 class CurrentChat extends StatelessWidget {
-  _chatPage(BuildContext ctx, String userId) {
-    Navigator.pushNamed(ctx, ChatScreen.routeName, arguments: userId);
+
+  _chatPage(BuildContext ctx, String userId, String name, String imageUrl) {
+    Navigator.pushNamed(ctx, ChatScreen.routeName,
+        arguments: [userId, name, imageUrl]);
   }
 
   @override
@@ -73,7 +75,7 @@ class CurrentChat extends StatelessWidget {
                       children: [
                         ListTile(
                           onTap: (){
-                            _chatPage(context,_chatUser[ind].userId);
+                            _chatPage(context,_chatUser[ind].userId,_chatUser[ind].name,_chatUser[ind].imageUrl);
                           },
                           leading: CircleAvatar(
                             radius: 35,

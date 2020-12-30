@@ -68,15 +68,7 @@ class _MessagesState extends State<Messages> {
               reverse: true,
               shrinkWrap: true,
               itemBuilder: (context, index) {
-                /* return Padding(
-                    padding: EdgeInsets.symmetric(vertical: 5),
-                    child: MessageBubble(
-                      msg: _messageList[index].text,
-                      isMe: _messageList[index].isMe,
-                      name: _messageList[index].userName,
-                      imageUrl: _messageList[index].imageUrl,
-                    ),
-                  );*/
+
                 return _messageList[index].isMe
                     ? Padding(
                         padding: EdgeInsets.symmetric(vertical: 5),

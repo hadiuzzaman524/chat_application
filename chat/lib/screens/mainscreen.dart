@@ -11,78 +11,77 @@ class MainScreen extends StatelessWidget {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-          appBar: AppBar(
-            actions: [
-              DropdownButton(
-                icon: Icon(
-                  Icons.list,
-                  color: Colors.white,
-                ),
-                items: [
-                  DropdownMenuItem(
-                    child: Text('Log Out'),
-                    value: 'logout',
-                  ),
-                ],
-                onChanged: (String value) {
-                  if (value == 'logout') {
-                    FirebaseAuth.instance.signOut();
-                  }
-                },
-              )
-            ],
-            bottom: TabBar(
-              tabs: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.chat,
-                      color: Colors.white,
-                    ),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    Text(
-                      'Chats',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.account_circle,
-                      color: Colors.white,
-                    ),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    Text(
-                      'Contacts',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
-                    ),
-                  ],
+        appBar: AppBar(
+          iconTheme: IconThemeData(color: Colors.white),
+          title: Text(
+            'easyChat',
+            style: TextStyle(
+                color: Colors.white, fontSize: 30, fontFamily: 'LobsterTwo'),
+          ),
+          actions: [
+            DropdownButton(
+              icon: Icon(
+                Icons.list,
+                color: Colors.white,
+              ),
+              items: [
+                DropdownMenuItem(
+                  child: Text('Log Out'),
+                  value: 'logout',
                 ),
               ],
-            ),
-          ),
-          body: TabBarView(
-            children: [
-              CurrentChat(),
-              UserContacts(),
-
+              onChanged: (String value) {
+                if (value == 'logout') {
+                  FirebaseAuth.instance.signOut();
+                }
+              },
+            )
+          ],
+          bottom: TabBar(
+            tabs: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: 5,
+                  ),
+                  Text(
+                    'Chats'.toUpperCase(),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: 5,
+                  ),
+                  Text(
+                    'Contacts'.toUpperCase(),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
             ],
-          )),
+          ),
+        ),
+        body: TabBarView(
+          children: [
+            CurrentChat(),
+            UserContacts(),
+          ],
+        ),
+        drawer: Drawer(),
+      ),
     );
   }
 }
