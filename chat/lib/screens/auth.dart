@@ -78,38 +78,46 @@ class _AuthScreenState extends State<AuthScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(colors: [
-            Colors.amber[50],
-            Colors.amber[100],
-            Colors.amber[200],
-            Colors.amber[100],
-            Colors.amber[50],
-          ]),
+      body: SingleChildScrollView(
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: RadialGradient(colors: [
+
+              Colors.white54,
+              Colors.lightGreenAccent,
+              Colors.greenAccent,
+            ],
+              radius: 1,
+              stops: [0.2,0.8,1]
+            ),/*LinearGradient(colors: [
+              Colors.greenAccent,
+              Colors.lightGreenAccent,
+              Colors.greenAccent,
+            ]),*/
+          ),
+          height: MediaQuery.of(context).size.height,
+          width: double.infinity,
+          child: isLoading
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : Column(
+                  children: [
+                    SizedBox(
+                      height: 100,
+                    ),
+                    _sign
+                        ? SignupDesign(
+                            create: _toogleSignUp,
+                            accountCreate: _createOrLoginUser,
+                          )
+                        : LogInDesign(
+                            create: _toggleLogIn,
+                            accountCreate: _createOrLoginUser,
+                          ),
+                  ],
+                ),
         ),
-        height: MediaQuery.of(context).size.height,
-        width: double.infinity,
-        child: isLoading
-            ? Center(
-                child: CircularProgressIndicator(),
-              )
-            : Column(
-                children: [
-                  SizedBox(
-                    height: 100,
-                  ),
-                  _sign
-                      ? SignupDesign(
-                          create: _toogleSignUp,
-                          accountCreate: _createOrLoginUser,
-                        )
-                      : LogInDesign(
-                          create: _toggleLogIn,
-                          accountCreate: _createOrLoginUser,
-                        ),
-                ],
-              ),
       ),
     );
   }

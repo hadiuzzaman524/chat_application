@@ -37,6 +37,7 @@ class _LogInDesignState extends State<LogInDesign> {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(15),
+      margin: EdgeInsets.only(top: 100),
       height: 400,
       width: double.infinity,
       child: Form(
@@ -112,10 +113,14 @@ class _LogInDesignState extends State<LogInDesign> {
               FlatButton(
                 onPressed: _saveInfo,
                 child: Container(
-                  color: Colors.blue,
+
                   width: double.infinity,
-                  height: 40,
+                  height: 45,
                   alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                   child: Text(
                     'Submit Info',
                     style: TextStyle(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../screens/chat.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'package:toast/toast.dart';
 
 class SignupDesign extends StatefulWidget {
   final Function create;
@@ -40,11 +41,11 @@ class _SignupDesignState extends State<SignupDesign> {
     });
   }
 
-  _saveForm() {
+  _saveForm(BuildContext context) {
     _formKey.currentState.save();
     bool valid = _formKey.currentState.validate();
-    if (valid) {
-      print("valid");
+    if (valid&&_image!=null) {
+
       //  Navigator.pushNamed(context, ChatScreen.routeName);
       widget.accountCreate(
           email: _emailController.text,
@@ -53,13 +54,26 @@ class _SignupDesignState extends State<SignupDesign> {
           isLogin: false,
           image: _image);
     }
+    else{
+      _showToastMsg(context);
+    }
+  }
+  _showToastMsg(BuildContext context){
+    Scaffold.of(context).showSnackBar(SnackBar(
+
+        content: Container(
+          child: Text('Please picked a image',style: TextStyle(
+              color: Colors.white,
+
+          ),textAlign: TextAlign.center,),
+        )));
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(15),
-      height: 400,
+     
       width: double.infinity,
       child: Form(
         key: _formKey,
@@ -200,18 +214,24 @@ class _SignupDesignState extends State<SignupDesign> {
                 },
                 textInputAction: TextInputAction.done,
                 onFieldSubmitted: (_) {
-                  _saveForm();
+                  _saveForm(context);
                 },
               ),
               SizedBox(
                 height: 15,
               ),
               FlatButton(
-                onPressed: _saveForm,
+                onPressed:(){
+                  _saveForm(context);
+                },
                 child: Container(
-                  color: Colors.blue,
+
                   width: double.infinity,
-                  height: 40,
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  height: 45,
                   alignment: Alignment.center,
                   child: Text(
                     'Submit Info',
