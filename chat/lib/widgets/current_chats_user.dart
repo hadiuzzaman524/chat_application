@@ -1,11 +1,13 @@
 import 'package:chat/model/user_info.dart';
-import 'package:chat/providers.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../screens/chat.dart';
 import '../model/message_info.dart';
+import '../model/message_provider.dart';
+import 'package:provider/provider.dart';
 
 class CurrentChat extends StatelessWidget {
   _chatPage(BuildContext ctx, String userId, String name, String imageUrl) {
@@ -13,8 +15,10 @@ class CurrentChat extends StatelessWidget {
         arguments: [userId, name, imageUrl]);
   }
 
+
   @override
   Widget build(BuildContext context) {
+
     return FutureBuilder<QuerySnapshot>(
         future: FirebaseFirestore.instance.collection('users').get(),
         builder: (ctx, snapshoot) {

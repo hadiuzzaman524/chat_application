@@ -49,6 +49,10 @@ class _AuthScreenState extends State<AuthScreen> {
       if (isLogin) {
         state = await auth.signInWithEmailAndPassword(
             email: email, password: password);
+        //new add
+        setState(() {
+          isLoading = false;
+        });
       } else {
         state = await auth.createUserWithEmailAndPassword(
             email: email, password: password);
@@ -69,6 +73,10 @@ class _AuthScreenState extends State<AuthScreen> {
           'imageUrl': imageUrl,
           'userId': state.user.uid
         });
+        //new added
+        setState(() {
+          isLoading = false;
+        });
       }
     } catch (error) {
       errorMsg = error.toString();
@@ -79,9 +87,7 @@ class _AuthScreenState extends State<AuthScreen> {
         isLoading = false;
       });
     }
-    setState(() {
-      isLoading = false;
-    });
+
   }
 
   _displaySnackBar(BuildContext context) {

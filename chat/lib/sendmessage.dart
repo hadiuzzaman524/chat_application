@@ -43,12 +43,12 @@ class _SendMessageState extends State<SendMessage> {
     textController.clear();
   }
 
-/*  @override
+  @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
     textController.dispose();
-  }*/
+  }
   @override
   Widget build(BuildContext context) {
     return Container(

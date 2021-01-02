@@ -1,7 +1,7 @@
-import 'package:chat/providers.dart';
-
+import 'package:chat/model/message_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 import './screens/auth.dart';
 import './screens/chat.dart';
@@ -13,10 +13,16 @@ import './screens/mainscreen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(// navigation bar color
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    // navigation bar color
     statusBarColor: Colors.lightGreen, // status bar color
   ));
-  runApp(MyApp());
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (_) => MessageProvider()),
+    ],
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -27,7 +33,6 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Colors.lightGreen,
         fontFamily: 'Merriweather',
-       
       ),
       home: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
@@ -47,7 +52,6 @@ class MyApp extends StatelessWidget {
       routes: {
         AuthScreen.routeName: (context) => AuthScreen(),
         ChatScreen.routeName: (context) => ChatScreen(),
-
       },
     );
   }

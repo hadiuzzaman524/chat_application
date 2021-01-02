@@ -30,11 +30,13 @@ class _ChatScreenState extends State<ChatScreen> {
             SizedBox(
               width: 15,
             ),
-            Text(
-              name,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
+            Flexible(
+              child: Text(
+                name,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
               ),
             )
           ],
