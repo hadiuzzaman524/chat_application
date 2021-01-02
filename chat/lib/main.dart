@@ -1,5 +1,5 @@
 import 'package:chat/providers.dart';
-import 'package:chat/screens/signup.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
       routes: {
         AuthScreen.routeName: (context) => AuthScreen(),
         ChatScreen.routeName: (context) => ChatScreen(),
-        Signup.routeName:(context) =>Signup(),
+
       },
     );
   }

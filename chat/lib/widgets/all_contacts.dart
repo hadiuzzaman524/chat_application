@@ -33,16 +33,11 @@ class UserContacts extends StatelessWidget {
                     ListTile(
                       contentPadding: EdgeInsets.all(10),
                       leading: CircleAvatar(
-
                         backgroundImage: NetworkImage(
                             snapshoot.data.docs[index]['imageUrl']),
                       ),
                       title: Text(
                         snapshoot.data.docs[index]['name'],
-                        style: TextStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.bold,
-                        ),
                       ),
                       onTap: () {
                         String userId = snapshoot.data.docs[index]['userId'];
@@ -52,7 +47,6 @@ class UserContacts extends StatelessWidget {
                             snapshoot.data.docs[index]['name'],
                             snapshoot.data.docs[index]['imageUrl']);
                       },
-
                     ),
                   Divider(
                     height: 1,

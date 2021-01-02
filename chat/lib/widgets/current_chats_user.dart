@@ -5,10 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../screens/chat.dart';
-
+import '../model/message_info.dart';
 
 class CurrentChat extends StatelessWidget {
-
   _chatPage(BuildContext ctx, String userId, String name, String imageUrl) {
     Navigator.pushNamed(ctx, ChatScreen.routeName,
         arguments: [userId, name, imageUrl]);
@@ -16,7 +15,6 @@ class CurrentChat extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return FutureBuilder<QuerySnapshot>(
         future: FirebaseFirestore.instance.collection('users').get(),
         builder: (ctx, snapshoot) {
@@ -27,7 +25,7 @@ class CurrentChat extends StatelessWidget {
           }
 
           return StreamBuilder<QuerySnapshot>(
-            stream:  Firestore.instance
+            stream: Firestore.instance
                 .collection('chat')
                 .orderBy('time', descending: true)
                 .snapshots(),
@@ -70,27 +68,30 @@ class CurrentChat extends StatelessWidget {
               return ListView.builder(
                 itemBuilder: (ctx, ind) {
                   return Container(
-                    padding: EdgeInsets.symmetric(vertical: 7,horizontal: 10),
+                    padding: EdgeInsets.symmetric(vertical: 7, horizontal: 10),
                     child: Column(
                       children: [
                         ListTile(
-                          onTap: (){
-                            _chatPage(context,_chatUser[ind].userId,_chatUser[ind].name,_chatUser[ind].imageUrl);
+                          onTap: () {
+                            _chatPage(context, _chatUser[ind].userId,
+                                _chatUser[ind].name, _chatUser[ind].imageUrl);
                           },
                           leading: CircleAvatar(
                             radius: 35,
-                            backgroundImage: NetworkImage(_chatUser[ind].imageUrl),
+                            backgroundImage:
+                                NetworkImage(_chatUser[ind].imageUrl),
                           ),
                           title: Text(
                             _chatUser[ind].name,
                             style: TextStyle(
-                              fontSize: 17,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           subtitle: Text('nothing to show...'),
                         ),
-                        Divider(height: 2,),
+                        Divider(
+                          height: 2,
+                        ),
                       ],
                     ),
                   );

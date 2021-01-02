@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../screens/chat.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-import 'package:toast/toast.dart';
+
 
 class SignupDesign extends StatefulWidget {
   final Function create;

@@ -19,6 +19,7 @@ class _AuthScreenState extends State<AuthScreen> {
   FirebaseAuth auth = FirebaseAuth.instance;
   String errorMsg = '';
   bool isLoading = false;
+  BuildContext cntx;
 
   _toogleSignUp() {
     setState(() {
@@ -57,39 +58,63 @@ class _AuthScreenState extends State<AuthScreen> {
             .child('user_images')
             .child(state.user.uid + '.jpg');
         await bucket.putFile(image).whenComplete(() => null);
-        final imageUrl =await bucket.getDownloadURL();
-
+        final imageUrl = await bucket.getDownloadURL();
 
         await FirebaseFirestore.instance
             .collection('users')
             .doc(state.user.uid)
-            .set({'name': name, 'email': email, 'imageUrl': imageUrl,'userId':state.user.uid});
+            .set({
+          'name': name,
+          'email': email,
+          'imageUrl': imageUrl,
+          'userId': state.user.uid
+        });
       }
     } catch (error) {
       errorMsg = error.toString();
-      // Scaffold.of(ctx).showSnackBar(SnackBar(content: Text(errorMsg)));
+      _displaySnackBar(cntx);
+      //  Scaffold.of(cntx).showSnackBar(SnackBar(content: Text(errorMsg)));
       print("error:" + errorMsg);
       setState(() {
         isLoading = false;
       });
     }
+    setState(() {
+      isLoading = false;
+    });
   }
+
+  _displaySnackBar(BuildContext context) {
+    final snackBar = SnackBar(
+        content: Text(
+      errorMsg,
+      textAlign: TextAlign.center,
+    ));
+    _scaffoldKey.currentState.showSnackBar(snackBar);
+  }
+
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
+    cntx = context;
     return Scaffold(
+      key: _scaffoldKey,
       body: SingleChildScrollView(
         child: Container(
           decoration: BoxDecoration(
-            gradient: RadialGradient(colors: [
-
-              Colors.white54,
-              Colors.lightGreenAccent,
-              Colors.greenAccent,
-            ],
-              radius: 1,
-              stops: [0.2,0.8,1]
-            ),/*LinearGradient(colors: [
+            gradient: RadialGradient(
+                colors: [
+                  Colors.white54,
+                  Colors.lightGreenAccent,
+                  Colors.greenAccent,
+                ],
+                radius: 1,
+                stops: [
+                  0.2,
+                  0.8,
+                  1
+                ]), /*LinearGradient(colors: [
               Colors.greenAccent,
               Colors.lightGreenAccent,
               Colors.greenAccent,
@@ -104,7 +129,7 @@ class _AuthScreenState extends State<AuthScreen> {
               : Column(
                   children: [
                     SizedBox(
-                      height: 100,
+                      height: 60,
                     ),
                     _sign
                         ? SignupDesign(
