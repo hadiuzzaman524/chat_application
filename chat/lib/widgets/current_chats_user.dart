@@ -19,6 +19,7 @@ class CurrentChat extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+   // final x=Provider.of<MessageProvider>(context).getLastMsg;
     return FutureBuilder<QuerySnapshot>(
         future: FirebaseFirestore.instance.collection('users').get(),
         builder: (ctx, snapshoot) {
@@ -52,7 +53,7 @@ class CurrentChat extends StatelessWidget {
                 }
               }
               _userList = _userList.toSet().toList();
-              print(_userList);
+             // print(_userList);
 
               List<UsrList> _chatUser = [];
 
@@ -69,7 +70,7 @@ class CurrentChat extends StatelessWidget {
               }
               // print(_chatUser.length);
 
-              return ListView.builder(
+              return _chatUser.isEmpty? Center(child: Text('No Chat users'),): ListView.builder(
                 itemBuilder: (ctx, ind) {
                   return Container(
                     padding: EdgeInsets.symmetric(vertical: 7, horizontal: 10),
@@ -91,7 +92,7 @@ class CurrentChat extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          subtitle: Text('nothing to show...'),
+                          //subtitle: Text('nothing to show...'),
                         ),
                         Divider(
                           height: 2,
