@@ -15,11 +15,9 @@ class CurrentChat extends StatelessWidget {
         arguments: [userId, name, imageUrl]);
   }
 
-
   @override
   Widget build(BuildContext context) {
-
-   // final x=Provider.of<MessageProvider>(context).getLastMsg;
+    // final x=Provider.of<MessageProvider>(context).getLastMsg;
     return FutureBuilder<QuerySnapshot>(
         future: FirebaseFirestore.instance.collection('users').get(),
         builder: (ctx, snapshoot) {
@@ -53,7 +51,7 @@ class CurrentChat extends StatelessWidget {
                 }
               }
               _userList = _userList.toSet().toList();
-             // print(_userList);
+              // print(_userList);
 
               List<UsrList> _chatUser = [];
 
@@ -70,40 +68,49 @@ class CurrentChat extends StatelessWidget {
               }
               // print(_chatUser.length);
 
-              return _chatUser.isEmpty? Center(child: Text('No Chat users'),): ListView.builder(
-                itemBuilder: (ctx, ind) {
-                  return Container(
-                    padding: EdgeInsets.symmetric(vertical: 7, horizontal: 10),
-                    child: Column(
-                      children: [
-                        ListTile(
-                          onTap: () {
-                            _chatPage(context, _chatUser[ind].userId,
-                                _chatUser[ind].name, _chatUser[ind].imageUrl);
-                          },
-                          leading: CircleAvatar(
-                            radius: 35,
-                            backgroundImage:
-                                NetworkImage(_chatUser[ind].imageUrl),
+              return _chatUser.isEmpty
+                  ? Image(
+                      image: AssetImage('assets/images/chatempty.png'),
+                      fit: BoxFit.cover,
+                    )
+                  : ListView.builder(
+                      itemBuilder: (ctx, ind) {
+                        return Container(
+                          padding:
+                              EdgeInsets.symmetric(vertical: 7, horizontal: 10),
+                          child: Column(
+                            children: [
+                              ListTile(
+                                onTap: () {
+                                  _chatPage(
+                                      context,
+                                      _chatUser[ind].userId,
+                                      _chatUser[ind].name,
+                                      _chatUser[ind].imageUrl);
+                                },
+                                leading: CircleAvatar(
+                                  radius: 35,
+                                  backgroundImage:
+                                      NetworkImage(_chatUser[ind].imageUrl),
+                                ),
+                                title: Text(
+                                  _chatUser[ind].name,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                //subtitle: Text('nothing to show...'),
+                              ),
+                              Divider(
+                                height: 2,
+                              ),
+                            ],
                           ),
-                          title: Text(
-                            _chatUser[ind].name,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          //subtitle: Text('nothing to show...'),
-                        ),
-                        Divider(
-                          height: 2,
-                        ),
-                      ],
-                    ),
-                  );
-                  // return Text('${_chatUser[ind].name}');
-                },
-                itemCount: _chatUser.length,
-              );
+                        );
+                        // return Text('${_chatUser[ind].name}');
+                      },
+                      itemCount: _chatUser.length,
+                    );
             },
           );
           // return Text('${snapshoot.data.size}');

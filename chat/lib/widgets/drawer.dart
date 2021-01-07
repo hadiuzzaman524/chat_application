@@ -9,7 +9,7 @@ class DrawerDesign extends StatelessWidget {
         children: [
           Container(
             height: 100,
-            color: Colors.lightGreen,
+            color: Color(0xff293F63),
           ),
           ListTile(
             leading: Icon(Icons.logout),

@@ -5,26 +5,34 @@ import '../widgets/contact_list.dart';
 class SearchContact extends SearchDelegate {
   final List<UsrList> userList;
   final Function(
-          BuildContext context, String userId, String name, String imageUrl)
-      chatPage;
+      BuildContext context, String userId, String name, String imageUrl)
+  chatPage;
 
   SearchContact({this.userList, this.chatPage});
 
   @override
   ThemeData appBarTheme(BuildContext context) {
-    // TODO: implement appBarTheme
-    return ThemeData(
-      primaryColor: Colors.lightGreen,
-      hintColor: Colors.white54,
+    final ThemeData theme = Theme.of(context);
+    return theme.copyWith(
+      primaryColor: theme.primaryColor,
+      primaryIconTheme: theme.primaryIconTheme,
+      primaryColorBrightness: theme.primaryColorBrightness,
+      primaryTextTheme: theme.primaryTextTheme,
     );
   }
 
+  @override
+  // TODO: implement searchFieldStyle
+  TextStyle get searchFieldStyle =>
+      TextStyle(
+        color: Colors.white54,
+      );
 
   @override
   List<Widget> buildActions(BuildContext context) {
     return [
       IconButton(
-          icon: Icon(Icons.clear,color: Colors.white,),
+          icon: Icon(Icons.clear, color: Colors.white,),
           onPressed: () {
             query = '';
           })
@@ -34,11 +42,12 @@ class SearchContact extends SearchDelegate {
   @override
   Widget buildLeading(BuildContext context) {
     return IconButton(
-        icon: Icon(Icons.arrow_back,color: Colors.white,),
+        icon: Icon(Icons.arrow_back, color: Colors.white,),
         onPressed: () {
           close(context, null);
         });
   }
+
 
   @override
   Widget buildResults(BuildContext context) {
@@ -51,9 +60,9 @@ class SearchContact extends SearchDelegate {
       usersInfo: query.isEmpty
           ? userList
           : userList
-              .where((element) =>
-                  element.name.toUpperCase().startsWith(query.toUpperCase()))
-              .toList(),
+          .where((element) =>
+          element.name.toUpperCase().startsWith(query.toUpperCase()))
+          .toList(),
       chatPage: chatPage,
     );
   }

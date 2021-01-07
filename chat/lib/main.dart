@@ -15,7 +15,7 @@ void main() async {
   await Firebase.initializeApp();
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     // navigation bar color
-    statusBarColor: Colors.lightGreen, // status bar color
+    statusBarColor: Color(0xff293F63), // status bar color
   ));
   runApp(MultiProvider(
     providers: [
@@ -31,7 +31,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primaryColor: Colors.lightGreen,
+        textTheme: TextTheme(
+          headline6: TextStyle(
+            color: Colors.white,
+          )
+        ),
+        primaryColor:Color(0xff293F63),
         fontFamily: 'Merriweather',
       ),
       home: StreamBuilder(
