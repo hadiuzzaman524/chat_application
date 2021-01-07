@@ -118,7 +118,7 @@ class _LogInDesignState extends State<LogInDesign> {
                   height: 45,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
-                    color: Colors.blue,
+                    color: Color(0xff293F63),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Text(

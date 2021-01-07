@@ -77,6 +77,7 @@ class _MessagesState extends State<Messages> {
                           isMe: true,
                           name: _messageList[index].userName,
                           imageUrl: _messageList[index].imageUrl,
+                          time: _messageList[index].timestamp,
                         ),
                       )
                     : Padding(
@@ -86,6 +87,7 @@ class _MessagesState extends State<Messages> {
                           isMe: false,
                           name: _messageList[index].userName,
                           imageUrl: _messageList[index].imageUrl,
+                          time: _messageList[index].timestamp,
                         ),
                       );
               },

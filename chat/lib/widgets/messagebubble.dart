@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -7,8 +8,9 @@ class MessageBubble extends StatelessWidget {
   final bool isMe;
   final String name;
   final String imageUrl;
+  final Timestamp time;
 
-  MessageBubble({this.msg, this.isMe, this.name, this.imageUrl});
+  MessageBubble({this.msg, this.isMe, this.name, this.imageUrl, this.time});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +18,7 @@ class MessageBubble extends StatelessWidget {
       mainAxisAlignment: isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
       children: [
         CircleAvatar(
-        backgroundImage: NetworkImage(imageUrl),
+          backgroundImage: NetworkImage(imageUrl),
           radius: 15,
         ),
         Container(
@@ -33,7 +35,6 @@ class MessageBubble extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-      
               SizedBox(
                 height: 3,
               ),
@@ -45,14 +46,36 @@ class MessageBubble extends StatelessWidget {
                         : msg.length < 30 && msg.length > 20
                             ? 150
                             : 250,
-                child: Text(
-                  msg,
-                  textAlign: TextAlign.justify,
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.normal,
-                    color: isMe ? Colors.black : Colors.black,
-                  ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: isMe
+                          ? MainAxisAlignment.end
+                          : MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          '${DateTime.fromMicrosecondsSinceEpoch(time.microsecondsSinceEpoch).hour.toString()}' +
+                              '${DateTime.fromMicrosecondsSinceEpoch(time.microsecondsSinceEpoch).minute.toString()}',
+                          style: TextStyle(
+                            fontSize: 9,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 1,
+                    ),
+                    Text(
+                      msg,
+                      textAlign: TextAlign.justify,
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.normal,
+                        color: isMe ? Colors.black : Colors.black,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ],

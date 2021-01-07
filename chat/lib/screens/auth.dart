@@ -92,6 +92,7 @@ class _AuthScreenState extends State<AuthScreen> {
 
   _displaySnackBar(BuildContext context) {
     final snackBar = SnackBar(
+      backgroundColor: Color(0xff293F63),
         content: Text(
       errorMsg,
       textAlign: TextAlign.center,
@@ -109,18 +110,19 @@ class _AuthScreenState extends State<AuthScreen> {
       body: SingleChildScrollView(
         child: Container(
           decoration: BoxDecoration(
-            gradient: RadialGradient(
+            color: Color(0xffededed),
+          /*  gradient: RadialGradient(
                 colors: [
                   Colors.white54,
-                  Colors.lightGreenAccent,
-                  Colors.greenAccent,
+                  Color(0xff293F55),
+                  Color(0xff293F63),
                 ],
                 radius: 1,
                 stops: [
                   0.2,
                   0.8,
                   1
-                ]), /*LinearGradient(colors: [
+                ]),*/ /*LinearGradient(colors: [
               Colors.greenAccent,
               Colors.lightGreenAccent,
               Colors.greenAccent,

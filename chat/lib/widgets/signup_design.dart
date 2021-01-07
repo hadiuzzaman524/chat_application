@@ -228,7 +228,7 @@ class _SignupDesignState extends State<SignupDesign> {
 
                   width: double.infinity,
                   decoration: BoxDecoration(
-                    color: Colors.blue,
+                    color: Color(0xff293F63),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   height: 45,
