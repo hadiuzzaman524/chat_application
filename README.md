@@ -3,7 +3,7 @@
 
 
 # login screen
-![login](https://github.com/hadiuzzaman524/chat_application/blob/main/Screenshot_1611305040.png =100x)
+![login](https://github.com/hadiuzzaman524/chat_application/blob/main/Screenshot_1611305040.png)
 
 # signup screen
 ![signup](https://github.com/hadiuzzaman524/chat_application/blob/main/Screenshot_1611305037.png)
