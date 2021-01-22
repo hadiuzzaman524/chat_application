@@ -20,7 +20,7 @@ class ContactList extends StatelessWidget {
                   image: AssetImage('assets/images/contactempty.png'),
                   fit: BoxFit.cover,
                 ),
-                Positioned(
+/*                Positioned(
                   left: 115,
                   top: 300,
                   child: Text(
@@ -31,7 +31,7 @@ class ContactList extends StatelessWidget {
                       fontSize: 20,
                     ),
                   ),
-                ),
+                ),*/
               ],
             )
           : ListView.builder(

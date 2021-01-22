@@ -80,29 +80,36 @@ class CurrentChat extends StatelessWidget {
                               EdgeInsets.symmetric(vertical: 7, horizontal: 10),
                           child: Column(
                             children: [
-                              ListTile(
-                                onTap: () {
-                                  _chatPage(
-                                      context,
-                                      _chatUser[ind].userId,
-                                      _chatUser[ind].name,
-                                      _chatUser[ind].imageUrl);
-                                },
-                                leading: CircleAvatar(
-                                  radius: 35,
-                                  backgroundImage:
-                                      NetworkImage(_chatUser[ind].imageUrl),
-                                ),
-                                title: Text(
-                                  _chatUser[ind].name,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: ListTile(
+                                  onTap: () {
+                                    _chatPage(
+                                        context,
+                                        _chatUser[ind].userId,
+                                        _chatUser[ind].name,
+                                        _chatUser[ind].imageUrl);
+                                  },
+                                  leading: CircleAvatar(
+                                    radius: 35,
+                                    backgroundImage:
+                                        NetworkImage(_chatUser[ind].imageUrl),
                                   ),
+                                  title: Text(
+                                    _chatUser[ind].name,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  //subtitle: Text('nothing to show...'),
                                 ),
-                                //subtitle: Text('nothing to show...'),
                               ),
-                              Divider(
-                                height: 2,
+                              Padding(
+                                padding: const EdgeInsets.only(left:80),
+                                child: Divider(
+                                  height: 4,
+                                  color: Colors.black,
+                                ),
                               ),
                             ],
                           ),

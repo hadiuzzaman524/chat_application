@@ -48,11 +48,14 @@ class MainScreen extends StatelessWidget {
                   SizedBox(
                     width: 5,
                   ),
-                  Text(
-                    'Contacts'.toUpperCase(),
-                    style: TextStyle(
-                      color: Colors.white,
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      'Contacts'.toUpperCase(),
+                      style: TextStyle(
+                        color: Colors.white,
 
+                      ),
                     ),
                   ),
                 ],

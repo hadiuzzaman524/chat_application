@@ -54,13 +54,13 @@ class MessageBubble extends StatelessWidget {
                           ? MainAxisAlignment.end
                           : MainAxisAlignment.start,
                       children: [
-                        Text(
+             /*           Text(
                           '${DateTime.fromMicrosecondsSinceEpoch(time.microsecondsSinceEpoch).hour.toString()}' +
                               '${DateTime.fromMicrosecondsSinceEpoch(time.microsecondsSinceEpoch).minute.toString()}',
                           style: TextStyle(
                             fontSize: 9,
                           ),
-                        ),
+                        ),*/
                       ],
                     ),
                     SizedBox(

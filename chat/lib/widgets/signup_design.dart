@@ -3,7 +3,6 @@ import '../screens/chat.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
-
 class SignupDesign extends StatefulWidget {
   final Function create;
   final Function(
@@ -31,7 +30,8 @@ class _SignupDesignState extends State<SignupDesign> {
   String _password;
   File _image;
 
-  _pickedImage() async {
+  _pickedFromCamera() async {
+    Navigator.pop(context);
     final img = await ImagePicker()
         .getImage(source: ImageSource.camera, imageQuality: 50, maxWidth: 150);
     setState(() {
@@ -41,11 +41,80 @@ class _SignupDesignState extends State<SignupDesign> {
     });
   }
 
+  _pickedFromGallery() async {
+    Navigator.pop(context);
+    final img = await ImagePicker()
+        .getImage(source: ImageSource.gallery, imageQuality: 50, maxWidth: 150);
+    setState(() {
+      if (img != null) {
+        _image = File(img.path);
+      }
+    });
+  }
+
+  _pickedImage(BuildContext context) async {
+    showModalBottomSheet(
+      context: context,
+      builder: (ctx) {
+        return Container(
+          width: double.infinity,
+          height: 300,
+          child: Column(
+            children: [
+              SizedBox(
+                height: 30,
+              ),
+              GestureDetector(
+                onTap: _pickedFromCamera,
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColor,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  width: double.infinity,
+                  child: Center(
+                    child: Text(
+                      "Choose Using Camera",
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              GestureDetector(
+                onTap: _pickedFromGallery,
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColor,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  width: double.infinity,
+                  child: Center(
+                    child: Text(
+                      "Choose From Gallery",
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   _saveForm(BuildContext context) {
     _formKey.currentState.save();
     bool valid = _formKey.currentState.validate();
-    if (valid&&_image!=null) {
-
+    if (valid && _image != null) {
       //  Navigator.pushNamed(context, ChatScreen.routeName);
       widget.accountCreate(
           email: _emailController.text,
@@ -53,27 +122,28 @@ class _SignupDesignState extends State<SignupDesign> {
           name: _nameController.text,
           isLogin: false,
           image: _image);
-    }
-    else{
+    } else {
       _showToastMsg(context);
     }
   }
-  _showToastMsg(BuildContext context){
+
+  _showToastMsg(BuildContext context) {
     Scaffold.of(context).showSnackBar(SnackBar(
-
         content: Container(
-          child: Text('Please picked a image',style: TextStyle(
-              color: Colors.white,
-
-          ),textAlign: TextAlign.center,),
-        )));
+      child: Text(
+        'Please picked a image',
+        style: TextStyle(
+          color: Colors.white,
+        ),
+        textAlign: TextAlign.center,
+      ),
+    )));
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(15),
-     
       width: double.infinity,
       child: Form(
         key: _formKey,
@@ -81,7 +151,9 @@ class _SignupDesignState extends State<SignupDesign> {
           child: Column(
             children: [
               GestureDetector(
-                onTap: _pickedImage,
+                onTap: () {
+                  _pickedImage(context);
+                },
                 child: CircleAvatar(
                   backgroundImage: _image != null ? FileImage(_image) : null,
                   backgroundColor: Colors.white,
@@ -221,11 +293,10 @@ class _SignupDesignState extends State<SignupDesign> {
                 height: 15,
               ),
               FlatButton(
-                onPressed:(){
+                onPressed: () {
                   _saveForm(context);
                 },
                 child: Container(
-
                   width: double.infinity,
                   decoration: BoxDecoration(
                     color: Color(0xff293F63),
